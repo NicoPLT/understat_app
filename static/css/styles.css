@@ -1,0 +1,91 @@
+body {
+    font-family: "Montserrat", sans-serif;
+    background-color: #4b3e2d;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+}
+
+h1 {
+    color: #adff00;
+    text-align: center;
+    margin-top: 2.5em;
+    font-weight: 800;
+}
+
+
+form {
+    background: #adff00;
+    margin-top: 15px;
+    padding: 20px;
+    width: 800px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+label {
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #292929;
+}
+
+
+input[type="text"],
+select {
+    width: 95%;
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    font-family: "montserrat";
+    font-size: 16px;
+    border-radius: 4px;
+}
+
+label[id="season"],
+select {
+    width: 98%;
+    font-family: "montserrat";
+}
+
+
+button {
+    background-color: #4b3e2d;
+    color: #ffffff;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 700;
+    font-family: "Montserrat";
+}
+
+button:hover {
+    background-color: #000000;
+}
+
+
+.form_xpg{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.result{
+    color: white;
+    padding-left: 30px;
+}
+
+.result button{
+    background-color: #adff00;
+    color: #1e1e1e;
+    border-radius: 30px;
+    padding: 15px;
+    font-weight: 900;
+}
+
+.result button:hover{
+    background-color: #1e1e1e;
+    color: white;
+}
