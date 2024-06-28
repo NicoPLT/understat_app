@@ -9,10 +9,10 @@
 <body>
     <h1>{{ player_name }}</h1>
     <div class="result">
-    <span style="font-weight: 700; text-decoration: underline 5px #adff00;">xG:</span><span> {{ stats.xG }}</span><br><br>
-    <span style="font-weight: 700; text-decoration: underline 5px #adff00;">xA:</span><span> {{ stats.xA }}</span><br><br>
-    <span style="font-weight: 700; text-decoration: underline 5px #adff00;">Partite Giocate:</span><span> {{ stats.games }}</span><br><br><br>
-    <a href="/"><button>Torna alla home</button></a>
+        <span style="font-weight: 700; text-decoration: underline 5px #adff00;">xG:</span><span> {{ stats.xG | round(2) }}</span><br><br>
+        <span style="font-weight: 700; text-decoration: underline 5px #adff00;">xA:</span><span> {{ stats.xA | round(2) }}</span><br><br>
+        <span style="font-weight: 700; text-decoration: underline 5px #adff00;">Partite Giocate:</span><span> {{ stats.games }}</span><br><br><br>
+        <a href="/"><button>Torna alla home</button></a>
     </div>
 </body>
 </html>
