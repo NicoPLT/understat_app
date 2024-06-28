@@ -15,19 +15,19 @@
 <body>
     <h1>Expected Goals (xG) Checker</h1>
     <div class="form_xpg">
-    <form action="/result" method="post">
-        <label for="player_name">Nome Giocatore:</label>
-        <input type="text" id="player_name" name="player_name" required>
-        
-        <label for="season">Seleziona Stagione:</label>
-        <select id="season" name="season" required>
-            {% for season in seasons %}
-                <option value="{{ season }}">{{ season }}</option>
-            {% endfor %}
-        </select>
-        
-        <button type="submit">Controlla Statistiche</button>
-    </form>
+        <form action="/result" method="post">
+            <label for="player_name">Nome Giocatore:</label>
+            <input type="text" id="player_name" name="player_name" required>
+            
+            <label for="season">Seleziona Stagione:</label>
+            <select id="season" name="season" required>
+                {% for season in seasons %}
+                    <option value="{{ season }}">{{ season }}</option>
+                {% endfor %}
+            </select>
+            
+            <button type="submit">Controlla Statistiche</button>
+        </form>
     </div>
 
     <script>
@@ -38,6 +38,7 @@
                     data: { season: season }
                 }).fail(function(jqXHR, textStatus, errorThrown) {
                     console.error("Errore nel caricamento dei nomi dei giocatori:", textStatus, errorThrown);
+                    alert('Errore nel caricamento dei nomi dei giocatori: ' + textStatus + ' ' + errorThrown);
                 });
             }
 
@@ -47,6 +48,8 @@
                     $('#player_name').autocomplete({
                         source: data
                     });
+                }).fail(function(jqXHR, textStatus, errorThrown) {
+                    console.error("Errore nel caricamento dei nomi dei giocatori:", textStatus, errorThrown);
                 });
             });
 
@@ -56,6 +59,3 @@
     </script>
 </body>
 </html>
-
-
-
