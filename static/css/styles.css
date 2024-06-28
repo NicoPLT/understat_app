@@ -89,3 +89,10 @@ button:hover {
     background-color: #1e1e1e;
     color: white;
 }
+
+
+@media screen and (max-width: 500px) {
+    form{
+        width: 75%;
+    }    
+}
