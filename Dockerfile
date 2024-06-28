@@ -1,17 +1,15 @@
-# Utilizzare un'immagine ufficiale di Python come immagine di base
-FROM python:3.11-slim
+# Usa un'immagine di base ufficiale di Python
+FROM python:3.11
 
-# Impostare la directory di lavoro
+# Imposta la directory di lavoro
 WORKDIR /app
 
-# Copiare i file requirements.txt e runtime.txt nella directory di lavoro
-COPY requirements.txt .
-
-# Installare le dipendenze
+# Copia il file requirements.txt e installa le dipendenze
+COPY requirements.txt requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copiare il resto dei file dell'applicazione nella directory di lavoro
+# Copia tutto il codice sorgente nell'immagine
 COPY . .
 
-# Comando per eseguire l'applicazione
+# Comanda per avviare l'app
 CMD ["gunicorn", "--bind", "0.0.0.0:8000", "app:app"]
