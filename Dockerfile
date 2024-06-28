@@ -1,21 +1,17 @@
-# Utilizza l'immagine di base di Python 3.11
-FROM python:3.11
+# Utilizzare un'immagine ufficiale di Python come immagine di base
+FROM python:3.11-slim
 
-# Installa le dipendenze di sistema necessarie
-RUN apt-get update && apt-get install -y build-essential libc-dev python3-dev
-
-# Imposta la directory di lavoro
+# Impostare la directory di lavoro
 WORKDIR /app
 
-# Copia il file requirements.txt
+# Copiare i file requirements.txt e runtime.txt nella directory di lavoro
 COPY requirements.txt .
 
-# Installa le dipendenze Python
-RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
+# Installare le dipendenze
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Copia il codice dell'applicazione
+# Copiare il resto dei file dell'applicazione nella directory di lavoro
 COPY . .
 
-# Esegui l'applicazione
-CMD ["gunicorn", "-b", "0.0.0.0:8000", "app:app"]
+# Comando per eseguire l'applicazione
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "app:app"]
