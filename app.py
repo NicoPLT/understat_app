@@ -14,6 +14,8 @@ async def fetch_player_stats(player_name, season):
                 return {
                     'xG': round(float(player.get('xG', 0)), 2),
                     'xA': round(float(player.get('xA', 0)), 2),
+                    'xG90': round(float(player.get('xG', 0)), 2),
+                    'xA90': round(float(player.get('xA', 0)), 2),
                     'games': player.get('games', 0)
                 }
         return None
