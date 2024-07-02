@@ -11,9 +11,13 @@
     <div class="result">
         <span style="font-weight: 700; text-decoration: underline 5px #adff00;">xG:</span><span> {{ stats.xG }}</span><br><br>
         <span style="font-weight: 700; text-decoration: underline 5px #adff00;">xA:</span><span> {{ stats.xA }}</span><br><br>
+        <span style="font-weight: 700; text-decoration: underline 5px #adff00;">Partite Giocate:</span><span> {{ stats.games }}</span><br><br>
         <span style="font-weight: 700; text-decoration: underline 5px #adff00;">xG90:</span><span> {{ stats.xG90 }}</span><br><br>
         <span style="font-weight: 700; text-decoration: underline 5px #adff00;">xA90:</span><span> {{ stats.xA90 }}</span><br><br>
-        <span style="font-weight: 700; text-decoration: underline 5px #adff00;">Partite Giocate:</span><span> {{ stats.games }}</span><br><br><br>
+        <span style="font-weight: 700; text-decoration: underline 5px #adff00;">Key Passes:</span><span> {{ stats.key_passes }}</span><br><br>
+        <h2>Heatmap della Stagione</h2>
+        <img src="{{ stats.heatmap_url }}" alt="Heatmap di {{ player_name }} nella stagione {{ season }}" style="max-width: 100%;">
+        <br><br>
         <a href="/"><button>Torna alla home</button></a>
     </div>
 </body>

@@ -11,12 +11,27 @@ async def fetch_player_stats(player_name, season):
         players = await understat_instance.get_league_players("serie_a", season)
         for player in players:
             if player['player_name'] == player_name:
+                xG = float(player.get('xG', 0))
+                xA = float(player.get('xA', 0))
+                minutes = int(player.get('time', 0))
+                key_passes = int(player.get('key_passes', 0))
+
+                # Calcola xG90 e xA90
+                xG90 = round(xG / (minutes / 90), 2) if minutes > 0 else 0
+                xA90 = round(xA / (minutes / 90), 2) if minutes > 0 else 0
+
+                # Recupera l'ID del giocatore per creare l'URL della heatmap
+                player_id = player['id']
+                heatmap_url = f"https://understat.com/heatmap/{player_id}/{season}"
+
                 return {
-                    'xG': round(float(player.get('xG', 0)), 2),
-                    'xA': round(float(player.get('xA', 0)), 2),
-                    'xG90': round(float(player.get('xG', 0)), 2),
-                    'xA90': round(float(player.get('xA', 0)), 2),
-                    'games': player.get('games', 0)
+                    'xG': round(xG, 2),
+                    'xA': round(xA, 2),
+                    'games': player.get('games', 0),
+                    'xG90': xG90,
+                    'xA90': xA90,
+                    'key_passes': key_passes,
+                    'heatmap_url': heatmap_url
                 }
         return None
 
@@ -53,4 +68,3 @@ def result():
 
 if __name__ == '__main__':
     app.run(debug=True)
-
