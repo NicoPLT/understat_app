@@ -22,7 +22,7 @@ async def fetch_player_stats(player_name, season):
 
                 # Recupera l'ID del giocatore per creare l'URL della heatmap
                 player_id = player['id']
-                heatmap_url = f"https://understat.com/heatmap/{player_id}/{season}"
+                heatmap_url = f"https://understat.com/player/{player_id}"
 
                 return {
                     'xG': round(xG, 2),
