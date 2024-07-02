@@ -15,6 +15,8 @@ async def fetch_player_stats(player_name, season):
                 xA = float(player.get('xA', 0))
                 minutes = int(player.get('time', 0))
                 key_passes = int(player.get('key_passes', 0))
+                goals = int(player.get('goals', 0))
+                assists = int(player.get('assists', 0))
 
                 # Calcola xG90 e xA90
                 xG90 = round(xG / (minutes / 90), 2) if minutes > 0 else 0
@@ -31,6 +33,8 @@ async def fetch_player_stats(player_name, season):
                     'xG90': xG90,
                     'xA90': xA90,
                     'key_passes': key_passes,
+                    'goals': goals,
+                    'assists': assists,
                     'heatmap_url': heatmap_url
                 }
         return None
