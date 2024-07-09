@@ -21,7 +21,6 @@ async def fetch_player_stats(player_name, season):
         if not player_data:
             return None
 
-        # Trova la lega in cui il giocatore ha giocato di più
         player_data.sort(key=lambda x: int(x.get('games', 0)), reverse=True)
         player = player_data[0]
 
@@ -42,6 +41,7 @@ async def fetch_player_stats(player_name, season):
             'xG': round(xG, 2),
             'xA': round(xA, 2),
             'games': player.get('games', 0),
+            'minutes': minutes,
             'xG90': xG90,
             'xA90': xA90,
             'key_passes': key_passes,
@@ -72,7 +72,7 @@ async def player_names():
             for player in players:
                 all_player_names.append(player['player_name'])
     
-    unique_player_names = list(set(all_player_names))  # Rimuove duplicati
+    unique_player_names = list(set(all_player_names))
     return jsonify(unique_player_names)
 
 @app.route('/result', methods=['POST'])
