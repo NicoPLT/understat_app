@@ -6,9 +6,7 @@
     <title>Expected Goals (xG) Checker</title>
     <link rel="stylesheet" href="/static/css/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800;900&display=swap" rel="stylesheet">
-    <!-- Includi la libreria di jQuery per semplificare le richieste AJAX -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- Includi una libreria di auto-completamento, come jQuery UI -->
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 </head>
@@ -21,8 +19,9 @@
             
             <label for="season">Seleziona Stagione:</label>
             <select id="season" name="season" required>
+                <option value="">Seleziona una stagione</option>
                 {% for season in seasons %}
-                    <option value="{{ season }}">{{ season }}</option>
+                    <option value="{{ season }}" {% if season == default_season %}selected{% endif %}>{{ season }}</option>
                 {% endfor %}
             </select>
             

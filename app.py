@@ -6,43 +6,55 @@ import asyncio
 app = Flask(__name__)
 
 async def fetch_player_stats(player_name, season):
+    leagues = ["Serie_A", "Ligue_1", "Bundesliga", "EPL", "La_Liga"]
     async with aiohttp.ClientSession() as session:
         understat_instance = understat.Understat(session)
-        players = await understat_instance.get_league_players("serie_a", season)
-        for player in players:
-            if player['player_name'] == player_name:
-                xG = float(player.get('xG', 0))
-                xA = float(player.get('xA', 0))
-                minutes = int(player.get('time', 0))
-                key_passes = int(player.get('key_passes', 0))
-                goals = int(player.get('goals', 0))
-                assists = int(player.get('assists', 0))
+        player_data = []
 
-                # Calcola xG90 e xA90
-                xG90 = round(xG / (minutes / 90), 2) if minutes > 0 else 0
-                xA90 = round(xA / (minutes / 90), 2) if minutes > 0 else 0
+        for league in leagues:
+            players = await understat_instance.get_league_players(league, season)
+            for player in players:
+                if player['player_name'] == player_name:
+                    player['league'] = league
+                    player_data.append(player)
 
-                # Recupera l'ID del giocatore per creare l'URL della heatmap
-                player_id = player['id']
-                heatmap_url = f"https://understat.com/player/{player_id}"
+        if not player_data:
+            return None
 
-                return {
-                    'xG': round(xG, 2),
-                    'xA': round(xA, 2),
-                    'games': player.get('games', 0),
-                    'xG90': xG90,
-                    'xA90': xA90,
-                    'key_passes': key_passes,
-                    'goals': goals,
-                    'assists': assists,
-                    'heatmap_url': heatmap_url
-                }
-        return None
+        # Trova la lega in cui il giocatore ha giocato di più
+        player_data.sort(key=lambda x: int(x.get('games', 0)), reverse=True)
+        player = player_data[0]
+
+        xG = float(player.get('xG', 0))
+        xA = float(player.get('xA', 0))
+        minutes = int(player.get('time', 0))
+        key_passes = int(player.get('key_passes', 0))
+        goals = int(player.get('goals', 0))
+        assists = int(player.get('assists', 0))
+
+        xG90 = round(xG / (minutes / 90), 2) if minutes > 0 else 0
+        xA90 = round(xA / (minutes / 90), 2) if minutes > 0 else 0
+
+        player_id = player['id']
+        heatmap_url = f"https://understat.com/player/{player_id}"
+
+        return {
+            'xG': round(xG, 2),
+            'xA': round(xA, 2),
+            'games': player.get('games', 0),
+            'xG90': xG90,
+            'xA90': xA90,
+            'key_passes': key_passes,
+            'goals': goals,
+            'assists': assists,
+            'heatmap_url': heatmap_url,
+            'league': player['league']
+        }
 
 @app.route('/')
 def index():
     seasons = ["2023", "2022", "2021", "2020", "2019"]
-    return render_template('index.html', seasons=seasons)
+    return render_template('index.html', seasons=seasons, default_season="2023")
 
 @app.route('/player_names', methods=['GET'])
 async def player_names():
@@ -50,11 +62,18 @@ async def player_names():
     if not season:
         return jsonify([])
 
+    leagues = ["Serie_A", "Ligue_1", "Bundesliga", "EPL", "La_Liga"]
+    all_player_names = []
+
     async with aiohttp.ClientSession() as session:
         understat_instance = understat.Understat(session)
-        players = await understat_instance.get_league_players("serie_a", season)
-        player_names = [player['player_name'] for player in players]
-        return jsonify(player_names)
+        for league in leagues:
+            players = await understat_instance.get_league_players(league, season)
+            for player in players:
+                all_player_names.append(player['player_name'])
+    
+    unique_player_names = list(set(all_player_names))  # Rimuove duplicati
+    return jsonify(unique_player_names)
 
 @app.route('/result', methods=['POST'])
 def result():
