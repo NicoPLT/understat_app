@@ -19,6 +19,7 @@ async def fetch_player_stats(player_name, season):
                     player_data.append(player)
 
         if not player_data:
+            print(f"No player data found for {player_name} in season {season}")
             return None
 
         player_data.sort(key=lambda x: int(x.get('games', 0)), reverse=True)
@@ -30,12 +31,32 @@ async def fetch_player_stats(player_name, season):
         key_passes = int(player.get('key_passes', 0))
         goals = int(player.get('goals', 0))
         assists = int(player.get('assists', 0))
+        shots = int(player.get('shots', 0))
+        is_goalkeeper = player.get('position', '') == 'GK'
+        
+        player_id = player['id']
+        team_id = player.get('team_id')
+
+        # Calculate clean sheets
+        clean_sheets = 0
+        if is_goalkeeper and team_id:
+            matches = await understat_instance.get_team_matches(team_id, season)
+            print(f"Team matches for {player_name} (Team ID: {team_id}): {matches}")
+            for match in matches:
+                if match['a_team_id'] == team_id:
+                    if int(match['a_goals']) == 0 and any(p['player_id'] == player_id for p in match['a_players']):
+                        clean_sheets += 1
+                elif match['h_team_id'] == team_id:
+                    if int(match['h_goals']) == 0 and any(p['player_id'] == player_id for p in match['h_players']):
+                        clean_sheets += 1
 
         xG90 = round(xG / (minutes / 90), 2) if minutes > 0 else 0
         xA90 = round(xA / (minutes / 90), 2) if minutes > 0 else 0
 
-        player_id = player['id']
         heatmap_url = f"https://understat.com/player/{player_id}"
+
+        # Debug output
+        print(f"Player: {player_name}, Season: {season}, Clean Sheets: {clean_sheets}")
 
         return {
             'xG': round(xG, 2),
@@ -47,8 +68,11 @@ async def fetch_player_stats(player_name, season):
             'key_passes': key_passes,
             'goals': goals,
             'assists': assists,
+            'shots': shots,
+            'clean_sheets': clean_sheets,
             'heatmap_url': heatmap_url,
-            'league': player['league']
+            'league': player['league'],
+            'is_goalkeeper': is_goalkeeper
         }
 
 @app.route('/')
@@ -71,7 +95,7 @@ async def player_names():
             players = await understat_instance.get_league_players(league, season)
             for player in players:
                 all_player_names.append(player['player_name'])
-    
+
     unique_player_names = list(set(all_player_names))
     return jsonify(unique_player_names)
 
