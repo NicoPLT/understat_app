@@ -3,7 +3,6 @@ body {
     background-color: #4b3e2d;
     margin: 0;
     padding: 0;
-    height: 100vh;
 }
 
 h1 {
@@ -88,6 +87,23 @@ button:hover {
 .result button:hover{
     background-color: #1e1e1e;
     color: white;
+    transition: all .3s ease-in-out;
+}
+
+footer{
+    position: absolute;
+    text-align: center;
+    bottom: 0;
+    width: 100%;
+    height: 1.7rem;
+    font-size: 0.9em;
+    font-weight: 400;
+    color: #adff00;
+}
+
+footer a{
+    color: #d5d0d0;
+    text-decoration: none;
 }
 
 
