@@ -1,39 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Expected Goals (xG) Checker</title>
-    <link rel="stylesheet" href="/static/css/styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800;900&display=swap" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <link rel="icon" type="image/x-icon" href="/static/favicon-xpchecher.png">
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-</head>
-<body>
-    <h1>Expected Goals (xG) Checker</h1>
-    <div class="form_xpg">
-        <form action="/result" method="post">
-            <label for="player_name">Nome Giocatore:</label>
-            <input type="text" id="player_name" name="player_name" required>
-            
-            <label for="season">Seleziona Stagione:</label>
-            <select id="season" name="season" required>
-                <option value="">Seleziona una stagione</option>
-                {% for season in seasons %}
-                    <option value="{{ season }}" {% if season == default_season %}selected{% endif %}>{{ season }}</option>
-                {% endfor %}
-            </select>
-            
-            <button type="submit">Controlla Statistiche</button>
-        </form>
-    </div>
-    <footer>
-        <a href="https://nicolopoletto.netlify.app/" target="blank">A creation by © Nicolò Poletto - Portfolio Website</span></a>
-    </footer>
 
-    <script>
+<head>
+	<meta charset="UTF-8">
+	<title>Expected Goals (xG) Checker</title>
+	<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css'>
+	<link rel='stylesheet' href='https://unicons.iconscout.com/release/v2.1.9/css/unicons.css'>
+	<link rel="stylesheet" href="/static/css/style2.css">
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800;900&display=swap" rel="stylesheet">
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<link rel="icon" type="image/x-icon" href="/static/favicon-xpchecher.png">
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+</head>
+
+<body>
+
+
+	<div class="section">
+		<div class="container">
+			<div class="row full-height justify-content-center">
+				<div class="col-12 text-center align-self-center py-5">
+					<div class="section pb-5 pt-5 pt-sm-2 text-center">
+						<h6 class="mb-0 pb-3"><span>Expected goals checker</span></h6>
+						<input class="checkbox" type="checkbox" id="reg-log" name="reg-log" />
+						<label for="reg-log"></label>
+						<div class="card-3d-wrap mx-auto">
+							<div class="card-3d-wrapper">
+								<div class="card-front">
+									<div class="center-wrap">
+										<div class="section text-center">
+											<h6 class="mb-4 pb-3">Inserisci il nome del giocatore</h6>
+											<form action="/result" method="post">
+												<div class="form-group">
+													<input type="text" id="player_name" name="player_name" class="form-style">
+													<i class="input-icon uil-head-side"></i>
+												</div>
+												<div class="form-group mt-2">
+													<select id="season" class="form-style" name="season" required>
+														{% for season in seasons %}
+														<option value="{{ season }}" {% if season==default_season
+															%}selected{% endif %}>{{ season }}</option>
+														{% endfor %}
+													</select>
+													<i class="input-icon uil uil-calender"></i>
+												</div>
+
+												<button class="btn" type="submit">Controlla Statistiche</button>
+											</form>
+
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<footer>
+		<a href="https://nicolopoletto.netlify.app/" target="blank">A creation by © Nicolò Poletto - Portfolio
+			Website</span></a>
+	</footer>
+	<!-- partial -->
+	<script>
         $(document).ready(function() {
             function getPlayerNames(season) {
                 return $.ajax({
@@ -61,4 +93,5 @@
         });
     </script>
 </body>
+
 </html>
