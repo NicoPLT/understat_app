@@ -335,3 +335,9 @@ footer a:hover {
   text-decoration: none;
 }
 
+@media screen and (max-width: 500px) {
+  .nodisp{
+    display: none;
+  }
+}
+  
