@@ -132,5 +132,9 @@ def result():
 
     return render_template('result.html', player_name=player_name, stats=player_stats)
 
+@app.route('/credits.html')
+def credits():
+    return render_template('credits.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
