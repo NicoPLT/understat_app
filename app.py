@@ -96,8 +96,8 @@ async def fetch_player_stats(player_name, season):
 
 @app.route('/')
 def index():
-    seasons = ["2024/2025", "2023/2024", "2022/2023", "2021/2022", "2020/2021", "2019/2020"]
-    return render_template('index.html', seasons=seasons, default_season="2024/2025")
+    seasons = ["2025/2026", "2024/2025", "2023/2024", "2022/2023", "2021/2022", "2020/2021", "2019/2020"]
+    return render_template('index.html', seasons=seasons, default_season="2025/2026")
 
 @app.route('/player_names', methods=['GET'])
 async def player_names():
