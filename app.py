@@ -15,12 +15,15 @@ async def fetch_player_stats(player_name, season):
         player_data = []
 
         for league in leagues:
-            players = await understat_instance.get_league_players(league, season.split('/')[0])
-            logging.info(f"Fetched {len(players)} players for {league} in season {season}")
-            for player in players:
-                if player['player_name'] == player_name:
-                    player['league'] = league
-                    player_data.append(player)
+            try:
+                players = await understat_instance.get_league_players(league, season.split('/')[0])
+                logging.info(f"Fetched {len(players)} players for {league} in season {season}")
+                for player in players:
+                    if player['player_name'] == player_name:
+                        player['league'] = league
+                        player_data.append(player)
+            except Exception as e:
+                logging.warning(f"Skipping {league} for season {season}: {e}")
 
         if not player_data:
             logging.warning(f"No player data found for {player_name} in season {season}")
@@ -105,9 +108,12 @@ async def fetch_player_names(season):
     async with aiohttp.ClientSession() as session:
         understat_instance = understat.Understat(session)
         for league in leagues:
-            players = await understat_instance.get_league_players(league, season.split('/')[0])
-            for player in players:
-                all_player_names.append(player['player_name'])
+            try:
+                players = await understat_instance.get_league_players(league, season.split('/')[0])
+                for player in players:
+                    all_player_names.append(player['player_name'])
+            except Exception as e:
+                logging.warning(f"Skipping {league} for season {season}: {e}")
     return list(set(all_player_names))
 
 @app.route('/player_names', methods=['GET'])
