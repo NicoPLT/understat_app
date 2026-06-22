@@ -1,7 +1,6 @@
 Flask[async]
 gunicorn
-understat
+understat==0.1.14
 requests
 aiohttp==3.8.3
 beautifulsoup4
-

@@ -1,24 +1,9 @@
 from flask import Flask, render_template, request, jsonify
 import understat
-import understat.utils as _understat_utils
 import aiohttp
 import asyncio
 import json
 import logging
-import re as _re
-
-def _patched_find_match(scripts, pattern):
-    """Patched version that skips script tags with None .string (changed in 2025/2026 page)."""
-    match = None
-    for script in scripts:
-        if script.string is None:
-            continue
-        match = _re.search(pattern, script.string)
-        if match:
-            break
-    return match
-
-_understat_utils.find_match = _patched_find_match
 
 app = Flask(__name__)
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
