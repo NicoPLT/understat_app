@@ -99,23 +99,26 @@ def index():
     seasons = ["2025/2026", "2024/2025", "2023/2024", "2022/2023", "2021/2022", "2020/2021", "2019/2020"]
     return render_template('index.html', seasons=seasons, default_season="2025/2026")
 
-@app.route('/player_names', methods=['GET'])
-async def player_names():
-    season = request.args.get('season')
-    if not season:
-        return jsonify([])
-
+async def fetch_player_names(season):
     leagues = ["Serie_A", "Ligue_1", "Bundesliga", "EPL", "La_Liga"]
     all_player_names = []
-
     async with aiohttp.ClientSession() as session:
         understat_instance = understat.Understat(session)
         for league in leagues:
             players = await understat_instance.get_league_players(league, season.split('/')[0])
             for player in players:
                 all_player_names.append(player['player_name'])
+    return list(set(all_player_names))
 
-    unique_player_names = list(set(all_player_names))
+@app.route('/player_names', methods=['GET'])
+def player_names():
+    season = request.args.get('season')
+    if not season:
+        return jsonify([])
+
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    unique_player_names = loop.run_until_complete(fetch_player_names(season))
     return jsonify(unique_player_names)
 
 @app.route('/result', methods=['POST'])
